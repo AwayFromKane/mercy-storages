@@ -1,10 +1,10 @@
 fx_version 'cerulean'
 game 'gta5'
 
-author 'Razer (#0404)'
+author 'Mercy Collective (https://dsc.gg/mercy-coll)'
 description 'Storages'
 
-ui_page {'html/ui.html'}
+ui_page 'nui/index.html'
 
 shared_scripts {
     'shared/sh_*.lua',
@@ -20,7 +20,7 @@ server_scripts {
 }
 
 files {
-	'html/ui.html',
-    'html/css/*.css',
-    'html/js/*.js',
+	'nui/index.html',
+    'nui/css/*.css',
+    'nui/js/**.js',
 }

@@ -1,22 +1,15 @@
 MC = {}
 MC.Storages = {}
 
-window.addEventListener('message', function(event) {
-    switch(event.data.action) {
-        case "open":
-            $(".keypad-container").fadeIn(250);
-        break;
-        case "close":
-            MC.Storages.Close()
-        break;
-    }
-});
+// Clicks
 
 $(document).on('click', '.submit', function(e){
     e.preventDefault();
     MC.Storages.Submit();
     MC.Storages.Close();
 });
+
+// Functions
 
 MC.Storages.Open = function() {
     $('#pass').val('');
@@ -34,6 +27,16 @@ MC.Storages.Submit = function() {
     }));
 }
 
+// Listener
+
+window.addEventListener('message', function(event) {
+    let Action = event.data.Action;
+    switch(Action) {
+        case "Open":
+            $(".keypad-container").fadeIn(250);
+        break;
+    }
+});
 
 document.onkeyup = function (data) {
     if (data.code == 'Enter' ) {

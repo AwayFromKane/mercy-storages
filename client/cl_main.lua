@@ -1,4 +1,3 @@
-local Mercy, LoggedIn = Config.CoreExport, false
 local CurrentStorageId = nil
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
@@ -8,13 +7,7 @@ RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
         end)
         Citizen.Wait(250)
         TriggerServerEvent('mc-storage/server/setup-containers')
-        Citizen.Wait(450)
-        LoggedIn = true
     end)
-end)
-
-RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    LoggedIn = false
 end)
 
 -- [ Code ] --
@@ -24,12 +17,11 @@ end)
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(4)
-        if LoggedIn then
+        if LocalPlayer.state.isLoggedIn then
             local NearStorage = false
             for k, v in pairs(Config.StorageContainers) do
-                local Distance = #(GetEntityCoords(PlayerPedId()) - vector3(v['Coords']['X'], v['Coords']['Y'], v['Coords']['Z']))
-                print(Distance)
-                if Distance <= 3.5 and IsAuthorized(v['Owner'], v['KeyHolders']) then
+                local Dist = #(GetEntityCoords(PlayerPedId()) - vector3(v['Coords']['X'], v['Coords']['Y'], v['Coords']['Z']))
+                if Dist <= 3.5 and IsAuthorized(v['Owner'], v['KeyHolders']) then
                     NearStorage = true
                     DrawMarker(2, v['Coords']['X'], v['Coords']['Y'], v['Coords']['Z'], 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1, 0.05, 242, 148, 41, 255, false, false, false, 1, false, false, false)
                     DrawText3D(v['Coords']['X'], v['Coords']['Y'], v['Coords']['Z'] + 0.15, '~g~E~s~ - Storage ('..v['SName']..')')
@@ -47,57 +39,6 @@ Citizen.CreateThread(function()
         end
     end
 end)
-
-
--- [ Functions ] --
-
-function DrawText3D(x, y, z, text)
-    SetTextScale(0.35, 0.35)
-    SetTextFont(4)
-    SetTextProportional(1)
-    SetTextColour(255, 255, 255, 215)
-    SetTextEntry("STRING")
-    SetTextCentre(true)
-    AddTextComponentString(text)
-    SetDrawOrigin(x,y,z, 0)
-    DrawText(0.0, 0.0)
-    ClearDrawOrigin()
-end
-
-function IsAuthorized(CitizenId, KeyHolders)
-    local Retval = false
-    if Mercy.Functions.GetPlayerData().citizenid == CitizenId then
-        Retval = true
-    end
-    return Retval
-end
-
-function OpenKeyPad()
-    SendNUIMessage({
-        action = "open"
-    })
-    SetNuiFocus(true, true)    
-end
-
-local function OpenStorage(StorageId)
-    TriggerServerEvent("inventory:server:OpenInventory", "stash", "storage_"..StorageId, {
-        maxweight = Config.MaxStashWeight,
-        slots = Config.StashSlots,
-    })
-    TriggerEvent("inventory:client:SetCurrentStash", "storage_"..StorageId)
-end
-
-local function IsRealEstate()
-    local Retval = false
-    if Mercy.Functions.GetPlayerData().job.name == Config.EstateJob then
-      Retval = true
-    end
-    return Retval
-end
-
--- RegisterCommand('keypad', function(source, args, RawCommand)
---     OpenKeyPad()
--- end)
 
 -- [ NUI Callbacks ] --
 

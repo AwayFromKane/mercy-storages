@@ -1,6 +1,6 @@
 # mercy-storages
 
-This script is made for the QB Framework, if you need any help please join our discord server for support.
+This script is made for the QB Framework, if you need any help please join our [discord server](https://dsc.gg/mercy-coll) for support.
 
 ## DEPENDENCY
 - [OXMYSQL](https://github.com/overextended/oxmysql/releases/download/v2.4.0/oxmysql.zip)
